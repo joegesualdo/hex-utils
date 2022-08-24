@@ -122,5 +122,15 @@ mod tests {
 
     // TODO: write tests
     #[test]
-    fn it_works() {}
+    fn it_works() {
+        // test: http://www.unit-conversion.info/texttools/hexadecimal/
+        let hex = "30784e6f6e63652077617320666f756e646564".to_string();
+        let expected_text = "0xNonce was founded".to_string();
+        let maybe_text = get_text_for_hex(&hex);
+        let text = match maybe_text {
+            Ok(text) => text.to_string(),
+            Err(_) => "wrong".to_string(),
+        };
+        assert_eq!(text, expected_text);
+    }
 }
