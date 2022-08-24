@@ -26,6 +26,9 @@ let text = match maybe_text {
 assert_eq!(text, expected_text);
 ```
 
+## Documentation
+Available methods and documentation can be found [here](https://docs.rs/hex-utilities/latest/hex_utilities/)
+
 ## License
 MIT © [Joe Gesualdo]()
  
