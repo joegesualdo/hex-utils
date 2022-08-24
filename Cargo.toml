@@ -1,5 +1,5 @@
 [package]
-name = "hex-utils"
+name = "hex-utilities"
 version = "0.1.0"
 edition = "2021"
 description = "Utilities for working with hexadecimal numbers"
