@@ -1,4 +1,4 @@
-use std::{env, fmt::LowerHex, io::Read};
+use std::io::Read;
 use std::{fmt::Write, num::ParseIntError};
 
 // Should work like this: http://www.unit-conversion.info/texttools/hexadecimal/
@@ -8,11 +8,11 @@ pub fn get_text_for_hex(hex: &String) -> Result<String, Error> {
     let maybe_hex_utf8 = convert_hex_utf8(&hex);
     match maybe_hex_utf8 {
         Ok(hex_utf8) => Ok(hex_utf8),
-        Err(error) => {
+        Err(_error) => {
             let maybe_hex_ascii = convert_hex_to_ascii(&hex);
             match maybe_hex_ascii {
                 Ok(hex_ascii) => Ok(hex_ascii),
-                Err(error) => Err(Error),
+                Err(_error) => Err(Error),
             }
         }
     }
@@ -25,10 +25,10 @@ pub fn convert_hex_utf8(hex: &String) -> Result<String, Error> {
             let maybe_utf_str = std::str::from_utf8(&decoded_hex);
             match maybe_utf_str {
                 Ok(utf_str) => Ok(utf_str.to_string()),
-                Err(error) => Err(Error),
+                Err(_error) => Err(Error),
             }
         }
-        Err(error) => Err(Error),
+        Err(_error) => Err(Error),
     }
 }
 
@@ -65,7 +65,7 @@ pub fn convert_hex_to_ascii(hex: &String) -> Result<String, Error> {
             }
             Ok(new_string)
         }
-        Err(error) => Err(Error),
+        Err(_error) => Err(Error),
     }
 }
 
@@ -120,6 +120,7 @@ pub fn convert_decimal_to_hexadecimal(
 mod tests {
     use super::*;
 
+    // TODO: write tests
     #[test]
     fn it_works() {}
 }
