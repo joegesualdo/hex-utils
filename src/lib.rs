@@ -70,9 +70,16 @@ pub fn convert_hex_to_ascii(hex: &String) -> Result<String, Error> {
 }
 
 pub fn decode_hex(s: &str) -> Result<Vec<u8>, ParseIntError> {
-    (0..s.len())
+    let len = s.len();
+    let is_len_odd = len % 2 == 1;
+    let s_twos_complement = if is_len_odd {
+        format!("0{}", s)
+    } else {
+        s.to_string()
+    };
+    (0..s_twos_complement.len())
         .step_by(2)
-        .map(|i| u8::from_str_radix(&s[i..i + 2], 16))
+        .map(|i| u8::from_str_radix(&s_twos_complement[i..i + 2], 16))
         .collect()
 }
 
@@ -132,5 +139,10 @@ mod tests {
             Err(_) => "wrong".to_string(),
         };
         assert_eq!(text, expected_text);
+    }
+    #[test]
+    fn decode_hex_test() {
+        let hex = "d473a59";
+        let decoded = decode_hex(hex);
     }
 }
