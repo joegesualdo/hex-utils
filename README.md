@@ -5,7 +5,7 @@
 > Add package to Cargo.toml file
 ```rust
 [dependencies]
-hex-utilities = "0.1.2"
+hex-utilities = "0.1.3"
 ```
 
 ## Usage:
