@@ -4,6 +4,17 @@ use std::{fmt::Write, num::ParseIntError};
 // Should work like this: http://www.unit-conversion.info/texttools/hexadecimal/
 pub struct Error;
 
+pub fn convert_decimal_to_32_byte_hex(num: u32) -> String {
+    format!("{:08x}", num)
+}
+pub fn convert_decimal_to_8_byte_hex(num: u8) -> String {
+    format!("{:02x}", num)
+}
+pub fn convert_hex_to_decimal(hex: &str) -> Result<i64, ParseIntError> {
+    let z = i64::from_str_radix(hex, 16);
+    z
+}
+
 pub fn get_text_for_hex(hex: &String) -> Result<String, Error> {
     let maybe_hex_utf8 = convert_hex_utf8(&hex);
     match maybe_hex_utf8 {
