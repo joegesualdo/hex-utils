@@ -1,6 +1,8 @@
 use std::io::Read;
 use std::{fmt::Write, num::ParseIntError};
 
+use binary_utils::{convert_to_binary_string, get_binary_string_for_byte_array};
+
 // Should work like this: http://www.unit-conversion.info/texttools/hexadecimal/
 pub struct Error;
 
@@ -136,6 +138,58 @@ pub fn convert_decimal_to_hexadecimal(
     } else {
         hex_string_without_prefix
     }
+}
+pub fn binary_to_hex(b: &str) -> Option<&str> {
+    match b {
+        "0000" => Some("0"),
+        "0001" => Some("1"),
+        "0010" => Some("2"),
+        "0011" => Some("3"),
+        "0100" => Some("4"),
+        "0101" => Some("5"),
+        "0110" => Some("6"),
+        "0111" => Some("7"),
+        "1000" => Some("8"),
+        "1001" => Some("9"),
+        "1010" => Some("A"),
+        "1011" => Some("B"),
+        "1100" => Some("C"),
+        "1101" => Some("D"),
+        "1110" => Some("E"),
+        "1111" => Some("F"),
+        _ => None,
+    }
+}
+pub fn convert_string_to_hex(s: &String) -> String {
+    let wif_bytes = s.as_bytes();
+    let binary = get_binary_string_for_byte_array(&wif_bytes.to_vec());
+
+    let mut s = String::new();
+    let mut b = String::new();
+    for byte in wif_bytes {
+        let binary_string = convert_to_binary_string(*byte, 8);
+
+        let first_4_binary = &binary_string[0..=3];
+        let first_4_hex = binary_to_hex(first_4_binary).unwrap();
+        let last_4_binary = &binary_string[4..=7];
+        let last_4_hex = binary_to_hex(last_4_binary).unwrap();
+        let to_p = format!("{}{}", first_4_hex, last_4_hex);
+
+        s.push_str(&to_p);
+    }
+    s
+}
+
+pub fn get_hex_string_from_byte_array(byte_array: &[u8]) -> String {
+    // Use that array to then create a length 32 array but with hexidecimal values, since we want
+    // each item of the array to represent only 4 bits, which is how many bits a hex represents
+    let array_with_base_16_numbers: Vec<u8> = byte_array.iter().map(|num| num % 16).collect();
+    // turn hex byte array into hex string
+    let hex_string = array_with_base_16_numbers
+        .iter()
+        .map(|byte| format!("{:x}", byte))
+        .collect::<String>();
+    hex_string
 }
 
 #[cfg(test)]
